@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './styles/root.scss';
 import Board from './components/Board';
+import History from './components/History';
 import { calculateWinner } from './helper';
 const App = () => {
   const [history, setHistory] = useState([
@@ -9,8 +10,6 @@ const App = () => {
   const [currentMove, setCurrentMove] = useState(0);
   const current = history[currentMove];
   const winner = calculateWinner(current.board);
-  console.log(winner);
-  console.log(history);
   const message = winner
     ? `Winner is ${winner}`
     : `Next player is ${current.isItNext ? 'x' : '0'}`;
@@ -30,11 +29,15 @@ const App = () => {
     });
     setCurrentMove(prev => prev + 1);
   };
+  const moveTo = move => {
+    setCurrentMove(move);
+  };
   return (
     <div className="app">
       <h1>Tic Tac Toe</h1>
       <h4>{message}</h4>
       <Board board={current.board} handleSquareClick={handleSquareClick} />
+      <History history={history} moveTo={moveTo} currentMove={currentMove} />
     </div>
   );
 };
